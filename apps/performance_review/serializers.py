@@ -9,7 +9,7 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = PerformanceReview
         fields = [
-            'id','employee_id','name', 'job_title', 'supervisor', 'department',
+            'id','employee_id', 'job_title', 'supervisor', 'department',
             'jobDuties', 'performanceSummary',
             'planning_comments', 'planning_employee_rating', 'planning_manager_rating',
             'productivity_comments', 'productivity_employee_rating', 'productivity_manager_rating',
@@ -61,7 +61,7 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
         }
 
     def get_employee_id(self, obj):
-        return obj.employee_id_id if obj.employee_id_id else None
+        return obj.employee_id if obj.employee_id else None
 
     def get_sections(self, obj):
         return {

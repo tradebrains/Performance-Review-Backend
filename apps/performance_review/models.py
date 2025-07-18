@@ -1,9 +1,7 @@
 from django.db import models
 
 class PerformanceReview(models.Model):
-    employee_id = models.CharField(
-        max_length=9, null=False, blank=False, primary_key=True
-    )
+    employee_id = models.CharField(max_length=20, null=True, blank=True)
     job_title = models.CharField(max_length=50 , null=True, blank=True)
     supervisor = models.CharField(max_length=30 , null=True, blank=True)
     department = models.CharField(max_length=20 , null=True, blank=True)
