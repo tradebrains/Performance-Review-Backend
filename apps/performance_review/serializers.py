@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import *
 
 class PerformanceReviewSerializer(serializers.ModelSerializer):
-    employee_id = serializers.SerializerMethodField()
+    employee_id = serializers.CharField(required=True)
     sections = serializers.SerializerMethodField()
 
     class Meta:

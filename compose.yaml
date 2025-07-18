@@ -1,0 +1,14 @@
+services:
+  performance_backend:
+    build: .
+    restart: always
+    ports:
+      - "8600"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 2g
+    #       cpus: "3"
+    #     reservations:
+    #       memory: 2g
+    #       cpus: "3"

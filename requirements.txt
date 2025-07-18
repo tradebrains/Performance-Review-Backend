@@ -6,3 +6,4 @@ dj-rest-auth==7.0
 django-environ
 mysqlclient==2.2.2
 django-mysql==4.17
+django-cors-headers==4.7

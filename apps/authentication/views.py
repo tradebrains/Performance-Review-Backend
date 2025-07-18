@@ -8,7 +8,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
-from .serializers import RegisterSerializer,LoginSerializer
+from .serializers import RegisterSerializer,LoginSerializer, UserSerializer
 from rest_framework import serializers, viewsets
 from rest_framework.generics import GenericAPIView
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -48,3 +48,7 @@ class LoginAPIView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UserModalView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
