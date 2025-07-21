@@ -6,6 +6,8 @@ from .views import *
 router=routers.DefaultRouter()
 router.register('performance-reviews', PerformanceReviewViewset)
 router.register('announcementReview/notification', AnnouncementReviewViewset)
+router.register('user-list', UserListViewset)
+router.register('manager-list', ManagerListViewset)
 
 urlpatterns = [
     path('', include(router.urls)),

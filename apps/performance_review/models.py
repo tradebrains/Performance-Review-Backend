@@ -48,3 +48,16 @@ class AnnouncementReview(models.Model):
     notification_title = models.CharField(max_length=255, null=False, blank=False)
     notification_description = models.TextField(null=False, blank=False)
     notification_date = models.DateField(blank=False, null=False)
+
+class UserList(models.Model):
+    email = models.EmailField(max_length=254, null=False, blank=False)
+    name = models.CharField(max_length=50, null=False, blank=False)
+    designation = models.CharField(max_length=50, null=False, blank=False)
+    user_role = models.CharField(max_length=20, null=False, blank=False)
+    reporting_manager = models.EmailField(max_length=254, null=False, blank=False)
+
+class ManagerList(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, null=False, blank=False)
+
+      

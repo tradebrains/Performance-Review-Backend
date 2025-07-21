@@ -55,3 +55,35 @@ class AnnouncementReviewViewset(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response({"message": "Announcement notification Updated successfully."}, status=status.HTTP_200_OK)
+    
+class UserListViewset(viewsets.ModelViewSet):
+    queryset = UserList.objects.all()
+    serializer_class = UserListSerializer
+
+    def get(self, request):
+        serializer = UserListSerializer()
+        serializer.is_valid()
+        return Response(serializer.data)
+        
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message": "User list Created successfully."}, status=status.HTTP_201_CREATED, headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()  
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response({"message": "User list Updated successfully."}, status=status.HTTP_200_OK)
+    
+class ManagerListViewset(viewsets.ModelViewSet):
+    queryset = ManagerList.objects.all()
+    serializer_class = ManagerListSerializer
+
+    def get(self, request):
+        serializer = ManagerListSerializer()
+        serializer.is_valid()
+        return Response(serializer.data) 

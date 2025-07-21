@@ -125,3 +125,21 @@ class AnnouncementReviewSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.Meta.depth = self.context.get('depth', 0)
+
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserList
+        fields = ['id', 'email', 'name', 'designation', 'user_role', 'reporting_manager']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.depth = self.context.get('depth', 0)
+
+class ManagerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ManagerList
+        fields = ['id', 'name']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.depth = self.context.get('depth', 0)
