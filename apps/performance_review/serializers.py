@@ -1,15 +1,15 @@
 
 from rest_framework import serializers
 from .models import *
-
+from apps.authentication.models import User
 class PerformanceReviewSerializer(serializers.ModelSerializer):
     employee_id = serializers.CharField(required=True)
     sections = serializers.SerializerMethodField()
-
+    employee_name = serializers.SerializerMethodField()
     class Meta:
         model = PerformanceReview
         fields = [
-            'id','employee_id', 'job_title', 'supervisor', 'department',
+            'id','employee_id', 'employee_name', 'job_title', 'supervisor', 'department',
             'jobDuties', 'performanceSummary',
             'planning_comments', 'planning_employee_rating', 'planning_manager_rating',
             'productivity_comments', 'productivity_employee_rating', 'productivity_manager_rating',
@@ -59,6 +59,13 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
             'selfImprovement_employee_rating': {'write_only': True},
             'selfImprovement_manager_rating': {'write_only': True},
         }
+
+    def get_employee_name(self, obj):
+        try:
+            user = User.objects.get()
+            return user.employee_name
+        except User.DoesNotExist:
+            return ""
 
     def get_employee_id(self, obj):
         return obj.employee_id if obj.employee_id else None
