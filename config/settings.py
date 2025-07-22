@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "apps.authentication",
     "apps.performance_review",
     "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
