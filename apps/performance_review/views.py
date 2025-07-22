@@ -5,18 +5,44 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from apps.authentication.models import User
+from django.db.models import Q
 
 
 # Create your views here.
 class PerformanceReviewViewset(viewsets.ModelViewSet):
-    queryset = PerformanceReview.objects.all()
+    queryset = PerformanceReview.objects.none()
     serializer_class = PerformanceReviewSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        serializer = PerformanceReviewSerializer()
-        serializer.is_valid()
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+
+        if not user or not user.is_authenticated:
+            return PerformanceReview.objects.none()
+
+        # 1. Superuser sees all
+        if user.is_superuser:
+            return PerformanceReview.objects.all()
+
+        # 2. Check if user is a manager (by matching employee_id with manager_id in ManagerList)
+        manager_entry = ManagerList.objects.filter(manager_id=user.employee_id).first()
+
+        if manager_entry:
+            # Get all employees who report to this manager (i.e. whose reporting_manager = this manager_entry)
+            employee_ids = User.objects.filter(
+                reporting_manager=manager_entry
+            ).values_list("employee_id", flat=True)
+
+            # Include own review + subordinates' reviews
+            return PerformanceReview.objects.filter(
+                Q(employee_id__in=employee_ids) | Q(employee_id=user.employee_id)
+            )
+
+        # 3. Regular employee - return only their own review
+        return PerformanceReview.objects.filter(employee_id=user.employee_id)
         
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
