@@ -61,11 +61,8 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
         }
 
     def get_employee_name(self, obj):
-        try:
-            user = User.objects.get()
-            return user.employee_name
-        except User.DoesNotExist:
-            return ""
+        user = User.objects.filter(employee_id=obj.employee_id).first()
+        return user.employee_name if user else ""
 
     def get_employee_id(self, obj):
         return obj.employee_id if obj.employee_id else None
