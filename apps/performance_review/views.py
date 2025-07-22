@@ -115,13 +115,13 @@ class ManagerListViewset(viewsets.ModelViewSet):
         return Response(serializer.data) 
     
 class StatusCheckViewset(viewsets.ModelViewSet):
-    queryset = StatusCheck.objects.all()
+    queryset = StatusCheck.objects.none()
     serializer_class = StatusCheckSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        serializer = StatusCheckSerializer()
-        serializer.is_valid()
-        return Response(serializer.data)
+    def get_queryset(self):
+        user = self.request.user
+        return StatusCheck.objects.filter(employee_id=user.employee_id)
         
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
