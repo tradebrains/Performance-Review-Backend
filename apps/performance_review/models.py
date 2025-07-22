@@ -61,4 +61,8 @@ class ManagerList(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     manager_id = models.CharField(max_length=20, null=True, blank=True)
 
+class StatusCheck(models.Model):
+    employee_id = models.CharField(max_length=20, null=False, blank=False)
+    status = models.CharField(max_length=20, null=False, blank=False)
+
       

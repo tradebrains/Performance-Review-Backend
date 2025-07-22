@@ -113,3 +113,26 @@ class ManagerListViewset(viewsets.ModelViewSet):
         serializer = ManagerListSerializer()
         serializer.is_valid()
         return Response(serializer.data) 
+    
+class StatusCheckViewset(viewsets.ModelViewSet):
+    queryset = StatusCheck.objects.all()
+    serializer_class = StatusCheckSerializer
+
+    def get(self, request):
+        serializer = StatusCheckSerializer()
+        serializer.is_valid()
+        return Response(serializer.data)
+        
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response({"message": "Status check Created successfully."}, status=status.HTTP_201_CREATED, headers=headers)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()  
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response({"message": "Status check Updated successfully."}, status=status.HTTP_200_OK)

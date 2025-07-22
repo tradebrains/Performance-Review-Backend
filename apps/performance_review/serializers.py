@@ -6,10 +6,11 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
     employee_id = serializers.CharField(required=True)
     sections = serializers.SerializerMethodField()
     employee_name = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
     class Meta:
         model = PerformanceReview
         fields = [
-            'id','employee_id', 'employee_name', 'job_title', 'supervisor', 'department',
+            'id','employee_id', 'employee_name','status', 'job_title', 'supervisor', 'department',
             'jobDuties', 'performanceSummary',
             'planning_comments', 'planning_employee_rating', 'planning_manager_rating',
             'productivity_comments', 'productivity_employee_rating', 'productivity_manager_rating',
@@ -63,6 +64,11 @@ class PerformanceReviewSerializer(serializers.ModelSerializer):
     def get_employee_name(self, obj):
         user = User.objects.filter(employee_id=obj.employee_id).first()
         return user.employee_name if user else ""
+    
+    def get_status(self, obj):
+        status_obj = StatusCheck.objects.filter(employee_id=obj.employee_id).first()
+        return status_obj.status if status_obj else ""
+
 
     def get_employee_id(self, obj):
         return obj.employee_id if obj.employee_id else None
@@ -143,6 +149,15 @@ class ManagerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ManagerList
         fields = ['id', 'name']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Meta.depth = self.context.get('depth', 0)
+
+class StatusCheckSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatusCheck
+        fields = ['id', 'employee_id', 'status']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

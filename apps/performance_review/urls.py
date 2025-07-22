@@ -8,6 +8,7 @@ router.register('performance-reviews', PerformanceReviewViewset)
 router.register('announcementReview/notification', AnnouncementReviewViewset)
 router.register('user-list', UserListViewset)
 router.register('manager-list', ManagerListViewset)
+router.register('status-check', StatusCheckViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
