@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         related_name='reporting_manager'
     )
     designation = models.CharField(max_length=50, blank=True, null=True)
-
+    employee_id = models.CharField(max_length=20, unique=True, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
