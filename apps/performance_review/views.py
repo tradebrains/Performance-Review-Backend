@@ -5,7 +5,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework import status
 from apps.authentication.models import User
 from django.db.models import Q
@@ -108,6 +108,7 @@ class UserListViewset(viewsets.ModelViewSet):
 class ManagerListViewset(viewsets.ModelViewSet):
     queryset = ManagerList.objects.all()
     serializer_class = ManagerListSerializer
+    permission_classes = [AllowAny]
 
     def get(self, request):
         serializer = ManagerListSerializer()
