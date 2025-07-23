@@ -55,7 +55,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'tokens', 'is_superuser']
+        fields = ['email', 'password', 'username', 'tokens', 'is_superuser', 'is_manager']
 
     def validate(self, attrs):
         email = attrs.get('email', '')
@@ -69,12 +69,17 @@ class LoginSerializer(serializers.ModelSerializer):
         if user.auth_provider != 'email':
             raise AuthenticationFailed(f'Please continue your login using {user.auth_provider}')
 
+        self.instance = user  # Important!
+        return attrs
+
+    def to_representation(self, instance):
         return {
-            'email': user.email,
-            'username': user.username,
-            'tokens': user.tokens(),
-            'user_id': user.id,
-            'is_superuser': user.is_superuser
+            'email': instance.email,
+            'username': instance.username,
+            'tokens': instance.tokens(),
+            'user_id': instance.id,
+            'is_superuser': instance.is_superuser,
+            'is_manager': instance.is_manager
         }
     
 class UserSerializer(serializers.ModelSerializer):

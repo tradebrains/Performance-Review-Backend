@@ -33,6 +33,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(username, email, password, **extra_fields)
         user.is_superuser = True
+        user.is_manager = True
         user.is_staff = True
         user.save()
         return user
@@ -56,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         related_name='reporting_manager'
     )
+    is_manager = models.BooleanField(default=False)
     designation = models.CharField(max_length=50, blank=True, null=True)
     employee_id = models.CharField(max_length=20, unique=True, blank=True, null=True)
     USERNAME_FIELD = 'email'
