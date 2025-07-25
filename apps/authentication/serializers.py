@@ -19,7 +19,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     default_error_messages = {
         'username': 'The username should only contain alphanumeric characters',
-        'email': 'Email must belong to tradebrains.in, fingrad.com, or newsslash.com'
+        'email': 'Email must belong to tradebrains.in, joinfingrad.com, or newsslash.com'
     }
 
     class Meta:
