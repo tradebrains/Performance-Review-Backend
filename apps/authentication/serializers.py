@@ -19,12 +19,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     default_error_messages = {
         'username': 'The username should only contain alphanumeric characters',
-        'email': 'Email must be a tradebrains.in email'
+        'email': 'Email must belong to tradebrains.in, fingrad.com, or newsslash.com'
     }
 
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'employee_name', 'reporting_manager', 'designation' , 'employee_id']
+        fields = ['email', 'username', 'password', 'employee_name', 'reporting_manager', 'designation', 'employee_id']
 
     def validate(self, attrs):
         email = attrs.get('email', '')
@@ -33,7 +33,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         if not username.isalnum():
             raise serializers.ValidationError({'username': self.default_error_messages['username']})
 
-        if not email.lower().endswith('@tradebrains.in'):
+        allowed_domains = ('@tradebrains.in', '@joinfingrad.com', '@newsslash.com')
+        if not email.lower().endswith(allowed_domains):
             raise serializers.ValidationError({'email': self.default_error_messages['email']})
 
         return attrs
@@ -43,6 +44,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.is_verified = True  # Automatically verified
         user.save()
         return user
+
 
 
 
